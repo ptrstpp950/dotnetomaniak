@@ -7,7 +7,7 @@ namespace Kigg.LinqToSql.DomainObjects
     {
         public Guid StoryId { get; set; }
         public Guid UserId { get; set; }
-        public string Ipaddress { get; set; }
+        public string IPAddress { get; set; }
         public DateTime Timestamp { get; set; }
 
         public Story Story { get; set; }

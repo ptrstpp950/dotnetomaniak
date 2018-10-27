@@ -11,7 +11,7 @@ namespace Kigg.LinqToSql.DomainObjects
         public DateTime CreatedAt { get; set; }
         public Guid StoryId { get; set; }
         public Guid UserId { get; set; }
-        public string Ipaddress { get; set; }
+        public string IPAddress { get; set; }
         public bool IsOffended { get; set; }
 
         public Story Story { get; set; }

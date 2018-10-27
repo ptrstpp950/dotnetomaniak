@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.IO;
 using Kigg.LinqToSql.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kigg.LinqToSql.DomainObjects
 {
@@ -169,32 +170,123 @@ namespace Kigg.LinqToSql.DomainObjects
 
         public virtual IQueryable<TEntity> GetQueryable<TEntity>() where TEntity : class
         {
-            return GetTable<TEntity>();
+            return this.Query<TEntity>();
         }
 
-        public virtual ITable GetEditable<TEntity>() where TEntity : class
+        public IEnumerable<T> ExecuteQuery<T>(string query, params object[] parameters)
         {
-            return GetTable<TEntity>();
+            if(typeof(T)!=typeof(KnownSource))
+                throw new NotImplementedException();
+            return (IEnumerable<T>) KnownSource.FromSql(query, parameters);
         }
 
         public void Insert<TEntity>(TEntity instance) where TEntity : class
         {
-            GetEditable<TEntity>().InsertOnSubmit(instance);
+            Add(instance);
+            SaveChanges();
         }
 
         public void InsertAll<TEntity>(IEnumerable<TEntity> instances) where TEntity : class
         {
-            GetEditable<TEntity>().InsertAllOnSubmit(instances);
+            AddRange(instances);
+            SaveChanges();
         }
 
         public void Delete<TEntity>(TEntity instance) where TEntity : class
         {
-            GetEditable<TEntity>().DeleteOnSubmit(instance);
+            Remove(instance);
+            SaveChanges();
         }
 
         public void DeleteAll<TEntity>(IEnumerable<TEntity> instances) where TEntity : class
         {
-            GetEditable<TEntity>().DeleteAllOnSubmit(instances);
-        }        
+            RemoveRange(instances);
+            SaveChanges();
+        }
+
+        public void SubmitChanges()
+        {
+            SaveChanges();
+        }
+
+        /*public IQueryable<StorySearchResult> StorySearch(string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<CommentSearchResult> CommentSearch(string query)
+        {
+            throw new NotImplementedException();
+        }*/
+
+        public int _10kPoints()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int StoryAdder()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int EarlyBird()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int _1kPoints()
+        {;
+            throw new NotImplementedException();
+        }
+
+        public int Commeter()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int NightOwl()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int UpVoter()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GoodStory()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GreatStory()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int PopularStory()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int MultiAdder()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Globetrotter()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Dotnetomaniak()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Facebook()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,4 +1,3 @@
-using System.Runtime.Caching;
 using Kigg.Infrastructure;
 
 namespace Kigg.LinqToSql.Repository

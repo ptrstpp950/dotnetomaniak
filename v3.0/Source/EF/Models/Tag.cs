@@ -7,7 +7,7 @@ namespace Kigg.LinqToSql.DomainObjects
     {
         public Tag()
         {
-            StoryTag = new HashSet<StoryTag>();
+            StoryTags = new HashSet<StoryTag>();
             UserTag = new HashSet<UserTag>();
         }
 
@@ -16,7 +16,7 @@ namespace Kigg.LinqToSql.DomainObjects
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public ICollection<StoryTag> StoryTag { get; set; }
+        public ICollection<StoryTag> StoryTags { get; set; }
         public ICollection<UserTag> UserTag { get; set; }
     }
 }

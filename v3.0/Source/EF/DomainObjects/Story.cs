@@ -451,10 +451,5 @@ namespace Kigg.LinqToSql.DomainObjects
             UniqueName = name;
             CreatedAt = createdAt;
         }
-
-        partial void OnHtmlDescriptionChanged()
-        {
-            TextDescription = HtmlDescription.StripHtml().Trim();
-        }
     }
 }

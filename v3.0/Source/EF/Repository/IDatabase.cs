@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.Linq;
     using System.Linq;
 
     using DomainObjects;
@@ -96,8 +95,6 @@
 
         IQueryable<TEntity> GetQueryable<TEntity>() where TEntity : class;
 
-        ITable GetEditable<TEntity>() where TEntity : class;
-
         IEnumerable<T> ExecuteQuery<T>(string query, params object[] parameters);
 
         void Insert<TEntity>(TEntity instance) where TEntity : class;
@@ -110,9 +107,9 @@
 
         void SubmitChanges();
 
-        IQueryable<StorySearchResult> StorySearch(string query);
+        //IQueryable<StorySearchResult> StorySearch(string query);
 
-        IQueryable<CommentSearchResult> CommentSearch(string query);
+        //IQueryable<CommentSearchResult> CommentSearch(string query);
 
         int _10kPoints();
         int StoryAdder();

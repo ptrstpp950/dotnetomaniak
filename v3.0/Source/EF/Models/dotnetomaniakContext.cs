@@ -81,7 +81,7 @@ namespace Kigg.LinqToSql.DomainObjects
                 entity.HasKey(e => new { e.StoryId, e.UserId });
 
                 entity.HasOne(d => d.Story)
-                    .WithMany(p => p.CommentSubscribtion)
+                    .WithMany(p => p.CommentSubscribtions)
                     .HasForeignKey(d => d.StoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Story_CommentSubscribtion");
@@ -176,7 +176,7 @@ namespace Kigg.LinqToSql.DomainObjects
 
                 entity.Property(e => e.HtmlDescription).IsRequired();
 
-                entity.Property(e => e.Ipaddress)
+                entity.Property(e => e.IPAddress)
                     .IsRequired()
                     .HasColumnName("IPAddress")
                     .HasMaxLength(15)
@@ -227,7 +227,7 @@ namespace Kigg.LinqToSql.DomainObjects
 
                 entity.Property(e => e.HtmlBody).IsRequired();
 
-                entity.Property(e => e.Ipaddress)
+                entity.Property(e => e.IPAddress)
                     .IsRequired()
                     .HasColumnName("IPAddress")
                     .HasMaxLength(15)
@@ -236,7 +236,7 @@ namespace Kigg.LinqToSql.DomainObjects
                 entity.Property(e => e.TextBody).IsRequired();
 
                 entity.HasOne(d => d.Story)
-                    .WithMany(p => p.StoryComment)
+                    .WithMany(p => p.StoryComments)
                     .HasForeignKey(d => d.StoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Story_StoryComment");
@@ -252,7 +252,7 @@ namespace Kigg.LinqToSql.DomainObjects
             {
                 entity.HasKey(e => new { e.StoryId, e.UserId });
 
-                entity.Property(e => e.Ipaddress)
+                entity.Property(e => e.IPAddress)
                     .IsRequired()
                     .HasColumnName("IPAddress")
                     .HasMaxLength(15)
@@ -261,7 +261,7 @@ namespace Kigg.LinqToSql.DomainObjects
                 entity.Property(e => e.Timestamp).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Story)
-                    .WithMany(p => p.StoryMarkAsSpam)
+                    .WithMany(p => p.StoryMarkAsSpams)
                     .HasForeignKey(d => d.StoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Story_StoryMarkAsSpam");
@@ -278,13 +278,13 @@ namespace Kigg.LinqToSql.DomainObjects
                 entity.HasKey(e => new { e.StoryId, e.TagId });
 
                 entity.HasOne(d => d.Story)
-                    .WithMany(p => p.StoryTag)
+                    .WithMany(p => p.StoryTags)
                     .HasForeignKey(d => d.StoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Story_StoryTag");
 
                 entity.HasOne(d => d.Tag)
-                    .WithMany(p => p.StoryTag)
+                    .WithMany(p => p.StoryTags)
                     .HasForeignKey(d => d.TagId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Tag_StoryTag");
@@ -292,7 +292,7 @@ namespace Kigg.LinqToSql.DomainObjects
 
             modelBuilder.Entity<StoryView>(entity =>
             {
-                entity.Property(e => e.Ipaddress)
+                entity.Property(e => e.IPAddress)
                     .IsRequired()
                     .HasColumnName("IPAddress")
                     .HasMaxLength(15)
@@ -301,7 +301,7 @@ namespace Kigg.LinqToSql.DomainObjects
                 entity.Property(e => e.Timestamp).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Story)
-                    .WithMany(p => p.StoryView)
+                    .WithMany(p => p.StoryViews)
                     .HasForeignKey(d => d.StoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Story_StoryView");
@@ -311,7 +311,7 @@ namespace Kigg.LinqToSql.DomainObjects
             {
                 entity.HasKey(e => new { e.StoryId, e.UserId });
 
-                entity.Property(e => e.Ipaddress)
+                entity.Property(e => e.IPAddress)
                     .IsRequired()
                     .HasColumnName("IPAddress")
                     .HasMaxLength(15)
@@ -320,7 +320,7 @@ namespace Kigg.LinqToSql.DomainObjects
                 entity.Property(e => e.Timestamp).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Story)
-                    .WithMany(p => p.StoryVote)
+                    .WithMany(p => p.StoryVotes)
                     .HasForeignKey(d => d.StoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Story_StoryVote");
@@ -381,7 +381,7 @@ namespace Kigg.LinqToSql.DomainObjects
                     .HasConstraintName("Achievement_UserAchievement");
 
                 entity.HasOne(d => d.User)
-                    .WithMany(p => p.UserAchievement)
+                    .WithMany(p => p.UserAchievements)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("User_UserAchievement");
@@ -394,7 +394,7 @@ namespace Kigg.LinqToSql.DomainObjects
                 entity.Property(e => e.Timestamp).HasColumnType("datetime");
 
                 entity.HasOne(d => d.User)
-                    .WithMany(p => p.UserScore)
+                    .WithMany(p => p.UserScores)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("User_UserScore");
@@ -411,7 +411,7 @@ namespace Kigg.LinqToSql.DomainObjects
                     .HasConstraintName("Tag_UserTag");
 
                 entity.HasOne(d => d.User)
-                    .WithMany(p => p.UserTag)
+                    .WithMany(p => p.UserTags)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("User_UserTag");

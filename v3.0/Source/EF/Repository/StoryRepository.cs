@@ -247,7 +247,7 @@ namespace Kigg.LinqToSql.Repository
             Check.Argument.IsNotNegative(start, "start");
             Check.Argument.IsNotNegative(max, "max");
 
-            string ftQuery = "\"" + query + "*\"";
+            /*string ftQuery = "\"" + query + "*\"";
 
             int total = Database.StoryDataSource
                                 .Count(s => (s.ApprovedAt != null) && (Database.StorySearch(ftQuery).Any(result => s.Id == result.Id) || s.Category.Name.Contains(query) || s.StoryTags.Any(st => st.Tag.Name.Contains(query)) || Database.CommentSearch(ftQuery).Any(result => result.StoryId == s.Id)));
@@ -258,9 +258,9 @@ namespace Kigg.LinqToSql.Repository
                                   .ThenBy(s => s.Rank)
                                   .ThenByDescending(s => s.CreatedAt)
                                   .Skip(start)
-                                  .Take(max);
+                                  .Take(max);*/
 
-            return BuildPagedResult<IStory>(stories, total);
+            return BuildPagedResult<IStory>(new IStory[]{}, 0);
         }
 
         public virtual PagedResult<IStory> FindPostedByUser(Guid userId, int start, int max)
