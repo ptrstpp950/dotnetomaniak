@@ -5,21 +5,22 @@ namespace Kigg.LinqToSql.Repository
     
     public class DatabaseFactory : DisposableResource, IDatabaseFactory
     {
+        private readonly IConnectionString _connectionString;
+
         //private readonly string _connectionString;
-        private readonly System.Data.IDbConnection _connection;
         private IDatabase _database;
 
         public DatabaseFactory(IConnectionString connectionString)
         {
+            _connectionString = connectionString;
             Check.Argument.IsNotNull(connectionString, "connectionString");
-            _connection = new System.Data.SqlClient.SqlConnection(connectionString.Value);
         }
 
         public virtual IDatabase Get()
         {
             if (_database == null)
             {
-                _database = new dotnetomaniakContext();
+                _database = new dotnetomaniakContext(_connectionString.Value);
             }
 
             return _database;

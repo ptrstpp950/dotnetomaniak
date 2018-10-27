@@ -6,13 +6,17 @@ namespace Kigg.LinqToSql.DomainObjects
 {
     public partial class dotnetomaniakContext : DbContext
     {
-        public dotnetomaniakContext()
+        private readonly string _connectionString;
+
+        public dotnetomaniakContext(string connectionString)
         {
+            _connectionString = connectionString;
         }
 
-        public dotnetomaniakContext(DbContextOptions<dotnetomaniakContext> options)
+        public dotnetomaniakContext(string connectionString, DbContextOptions<dotnetomaniakContext> options)
             : base(options)
         {
+            _connectionString = connectionString;
         }
 
         public virtual DbSet<Achievement> Achievement { get; set; }
@@ -37,8 +41,7 @@ namespace Kigg.LinqToSql.DomainObjects
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=(LocalDb)\\MSSQLLocalDB;Initial Catalog=dotnetomaniak;Integrated Security=SSPI;");
+                optionsBuilder.UseSqlServer(_connectionString);
             }
         }
 

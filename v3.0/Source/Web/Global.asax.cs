@@ -105,11 +105,11 @@ namespace Kigg.Web
         private void InitializeDatabase()
         {
             string connectionString = ConfigurationManager.ConnectionStrings["dotnetomaniak"].ConnectionString;
-            Database database = new Database(connectionString);
+            /*Database database = new Database(connectionString);
             if (!database.DatabaseExists())
             {
                 database.CreateDatabase();
-            }
+            }*/
         }
 
         protected void Application_End()
