@@ -14,7 +14,8 @@ namespace Kigg
             Check.Argument.IsNotNull(result, "result");
             Check.Argument.IsNotNegative(total, "total");
 
-            _result = new ReadOnlyCollection<T>(new List<T>(result));
+            var list = new List<T>(result);
+            _result = new ReadOnlyCollection<T>(list);
             _total = total;
         }
 

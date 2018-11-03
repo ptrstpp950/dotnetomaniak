@@ -1,4 +1,6 @@
-﻿namespace Kigg.LinqToSql.Repository
+﻿using System.Collections.Generic;
+
+namespace Kigg.LinqToSql.Repository
 {
     using System.Collections;
     using System.Diagnostics;
@@ -44,9 +46,9 @@
             Database.Delete(entity as TClass);
         }
 
-        protected static PagedResult<T> BuildPagedResult<T>(IEnumerable entities, int total)
+        protected static PagedResult<T> BuildPagedResult<T>(IEnumerable<T> entities, int total)
         {
-            return new PagedResult<T>(entities.Cast<T>(), total);
+            return new PagedResult<T>(entities, total);
         }
     }
 }

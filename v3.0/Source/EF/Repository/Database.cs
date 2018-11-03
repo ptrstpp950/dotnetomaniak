@@ -36,10 +36,7 @@ namespace Kigg.LinqToSql.DomainObjects
         public IQueryable<Story> StoryDataSource
         {
             [DebuggerStepThrough]
-            get
-            {
-                return GetQueryable<Story>();
-            }
+            get { return Story.Include(x=>x.User).Include(x=>x.Category); }
         }
 
         public IQueryable<StoryComment> CommentDataSource
@@ -170,7 +167,7 @@ namespace Kigg.LinqToSql.DomainObjects
 
         public virtual IQueryable<TEntity> GetQueryable<TEntity>() where TEntity : class
         {
-            return this.Query<TEntity>();
+            return this.Set<TEntity>();
         }
 
         public IEnumerable<T> ExecuteQuery<T>(string query, params object[] parameters)

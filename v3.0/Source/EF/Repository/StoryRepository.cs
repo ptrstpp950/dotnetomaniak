@@ -1,4 +1,5 @@
 ﻿using Kigg.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kigg.LinqToSql.Repository
 {
@@ -93,12 +94,12 @@ namespace Kigg.LinqToSql.Repository
             int total = CountByPublished();
 
             var stories = Database.StoryDataSource
-                                  .Where(s => (s.ApprovedAt != null) && (s.PublishedAt != null) && (s.Rank != null))
-                                  .OrderByDescending(s => s.PublishedAt)
-                                  .ThenBy(s => s.Rank)
-                                  .ThenByDescending(s => s.CreatedAt)
-                                  .Skip(start)
-                                  .Take(max);
+                .Where(s => (s.ApprovedAt != null) && (s.PublishedAt != null) && (s.Rank != null))
+                .OrderByDescending(s => s.PublishedAt)
+                .ThenBy(s => s.Rank)
+                .ThenByDescending(s => s.CreatedAt)
+                .Skip(start)
+                .Take(max);
 
             return BuildPagedResult<IStory>(stories, total);
         }
