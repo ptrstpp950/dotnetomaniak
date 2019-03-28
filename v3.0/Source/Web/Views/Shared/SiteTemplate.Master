@@ -26,8 +26,6 @@
 
             if (!string.IsNullOrEmpty(message))
             {
-                message = HttpUtility.UrlDecode(message);
-
                 bool isError;
                 bool.TryParse(notification.Values["err"], out isError);
 
@@ -175,20 +173,23 @@
       xmlns:og="http://ogp.me/ns#">
 <head runat="server">
     <title></title>
-    <meta name="title" property="og:title" content="<%= ""+Page.Header.Title %>"  />
     <meta http-equiv="content-type" content="text/html;charset=utf-8" />
     <meta id="metaKeywords" runat="server" name="keywords" content="" />
-    <meta id="metaDescription" runat="server" name="description" property="og:description" content="" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@dotnetomaniak" />
-    <meta name="twitter:description" content="<%= "" + Model.MetaDescription %>" />
-    <meta name="twitter:title" content="<%= ""+Page.Header.Title %>"  />
-    <meta name="twitter:image" content="https://dotnetomaniak.pl/Assets/Images/dotnetomaniak_logo_twitter.jpg"  />
-    <meta property="og:image" content="https://dotnetomaniak.pl/Assets/Images/logo-dotnetomaniak.png"  />
-
+    <meta id="metaDescription" runat="server" name="description" content="" />
     <meta name="Rating" content="General" />
     <meta name="robots" content="index, follow" />  
-    <link href="<%= Url.Asset("css").Replace("&", "&amp;") %>" rel="stylesheet" type="text/css" />
+    <!--link href="<%= Url.Asset("css").Replace("&", "&amp;") %>" rel="stylesheet" type="text/css" /-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" 
+          integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <style type="text/css">
+        .mh-130 {
+            min-height: 130px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://forum.azyrusthemes.com/css/custom.css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" 
+          integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous"/>
+    
     <link href="<%= Url.Image("fav.ico")%>" rel="shortcut icon" type="image/x-icon" />
     <link href="<%= Url.Image("fav.png")%>" rel="icon" type="image/png" />
     <link href="<%= Url.Content("~/opensearch.axd")%>?v1" title="<%= Model.SiteTitle %>"
@@ -236,19 +237,19 @@
             });
         }
 
-        (function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = 'https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v3.2&appId=<%= Model.FacebookAppId %>&autoLogAppEvents=1';
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
+        (function (d) {
+            var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement('script'); js.id = id; js.async = true;
+            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=<%= Model.FacebookAppId %>&version=v2.10";
+            ref.parentNode.insertBefore(js, ref);
+        }(document));
 
         function checkLoginState() {
             var data;
-            FB.api('/me', {fields: 'name,email'}, function (response) {
+            FB.api('/me', function (response) {
                 data = response;
-                var dataString = JSON.stringify(data);
+                var dataString = JSON.stringify(data)
                 $.ajax({
                     url: '/Facebook/LogByFbData',
                     type: 'POST',
@@ -321,11 +322,40 @@
     </script>
 </head>
 <body>
-
+    
     <div id="fb-root"></div>
     <div id="info"></div>
-    <div id="container">
-        <div id="top">
+    <div id="container" class="container">
+        <% Html.RenderAction("Menu", "Membership");%>
+        <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+            <% Html.RenderAction("Menu", "Membership");%>
+            <a class="navbar-brand" href="/">
+                <img alt="<%= Model.SiteTitle %>" src="<%= Url.Image("logo-dotnetomaniak.png") %>" 
+                     class="d-inline-block align-top" alt=""/>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavLogin" 
+                    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                Login
+            </button>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" 
+                    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <% Html.RenderAction("Menu", "Category"); %>
+                <form class="form-inline my-2 my-lg-0">
+                    <a class="btn btn-outline-info my-2 my-sm-0" href="<%= Url.Action("Upcoming", "Story", new {page = 0})%>">
+                        <i title="Oczekujące" class="fas fa-tasks"></i>
+                        <span class="badge badge-info"><%= ViewData.Model.UpcomingStoriesCount%></span>
+                    </a>
+                    <a class="btn btn-outline-success my-2 my-sm-0 ml-3" href="<%= Url.Action("Submit", "Story")%>">
+                        <i class="fas fa-plus-square" title="Dodaj"></i>
+                    </a>
+                </form>
+            </div>
+        </nav>
+        
+        <!--div id="top">
             <h1>
                 <a rel="home" title="<%= Model.SiteTitle %>" href="<%= Url.Content("~/") %>">
                     <img alt="<%= Model.SiteTitle %>" src="<%= Url.Image("logo-dotnetomaniak.png") %>" />
@@ -337,28 +367,22 @@
                         Html.RenderAction("Menu", "Membership");%>
                 </div>
                 <div class="top-right-bottom">
-                    <p>
-                        <%= Html.ActionLink("Dodaj artykuł", "Submit", "Story", null, new {id = "blue-button"})%>
-                    </p>
                     <p class="show-more-articles">
                         <%= Html.ActionLink("Zobacz listę oczekujących artykułów (" + ViewData.Model.UpcomingStoriesCount.ToString() + ")", "Upcoming", "Story", new { page = 0 }, null)%> 
                     </p>
                 </div>               
             </div>
-            <div id="menuwrapper">
-                <% Html.RenderAction("Menu", "Category"); %>
-            </div>
             <%--<% Html.RenderPartial("FbLog", ViewData.Model); %>--%>
             <%--<% Html.RenderPartial("SearchBox", ViewData.Model); %>--%>
-        </div>
-        <div id="content">
+        </div-->
+        <div id="content" class="row">
             <% Html.RenderAction("Banner", "Recommendation"); %>
-            <div id="main">
+            <div id="main" class="row">
                 <asp:ContentPlaceHolder ID="MainContentPlaceHolder" runat="server">
                 </asp:ContentPlaceHolder>          
                 </div> 
             <div id="sub">
-                <%
+                <%--
                     if (Model.CanCurrentUserModerate)
                     {
                         Html.RenderAction("ControlPanel", "Support");
@@ -369,12 +393,9 @@
 
                 <% Html.RenderAction("TopTabs","Membership"); %>
                 <% Html.RenderAction("Tabs","Tag"); %>
+                <% Html.RenderPartial("GooglePlusBox"); --%>	  
                 </div>	 
-            <div class="fb-page" data-href="https://www.facebook.com/dotnetomaniakpl/" data-width="919" 
-                 data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" 
-                 data-show-facepile="true">
-                <blockquote cite="https://www.facebook.com/dotnetomaniakpl/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/dotnetomaniakpl/">dotnetomaniak.pl</a></blockquote>
-            </div>
+            <script src="//connect.facebook.net/pl_PL/all.js#xfbml=1" type="text/javascript"></script><fb:like-box href="http://www.facebook.com/dotnetomaniakpl" width="919" show_faces="true" stream="false" header="true"></fb:like-box>
         </div> 
         <div id="footer">
             <p>
@@ -390,7 +411,19 @@
     <div id="dimBackground" class="dimBackground"></div>
     
     <% Html.RenderPartial("MembershipBox", Model); %>
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
     <kigg:jQueryScriptManager ID="scripts" runat="server">
     </kigg:jQueryScriptManager>
+    <script src="/Assets/JavaScripts/Membership.js?d=<%=DateTime.Now.ToString("yyyyMMddHHmmss")%>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        })
+    </script>
 </body>
 </html>

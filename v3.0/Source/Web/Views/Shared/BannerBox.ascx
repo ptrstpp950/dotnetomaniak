@@ -6,6 +6,6 @@
    { %>
 <% var ad = Model.Recommendations.FirstOrDefault();
 %>
-<a href="<%= ad.UrlLink %>" style="display: block; width: 960px; margin-left: -22px" title="<%= ad.UrlTitle %>" target="_blank" rel="noopener">
+<a href="<%= ad.UrlLink %>" style="display: block; width: 960px; margin-left: -22px" title="<%= ad.UrlTitle %>" target="_blank">
     <img src="<%= Url.Image(ad.ImageName) %>" alt="<%= ad.ImageAlt %>" /></a>
 <% } %>

@@ -104,15 +104,12 @@
 <%          
     string attributedEncodedStoryId = Html.AttributeEncode(story.Id.Shrink());
     bool detailsMode = Model.DetailMode; %>
-<div class="kigg">
-    <div class="count" id="s-c-<%= attributedEncodedStoryId %>">
-        <%= story.VoteCount %>
-    </div>
+<div class="kigg postinfo col-2 border-right text-muted">
     <%
         string actionClass = "none";
-        string spamClass = "hide";
-        string kiggClass = "hide";
-        string unkiggClass = "hide";
+        string spamClass = "d-none";
+        string kiggClass = "d-none";
+        string unkiggClass = "d-none";
 
         if (user == null)
         {
@@ -140,8 +137,46 @@
             }
         }
     %>
+    <div class="comments">
+        <% if (!story.IsPostedBy(user)) %>
+        <% { %>
+            <a id="a-k-<%= attributedEncodedStoryId%>" href="javascript:void(0)" class="<%= kiggClass %>"
+               onclick="javascript:Story.promote('<%= attributedEncodedStoryId %>');">
+                <i class="fas fa-arrow-up" title="<%= ViewData.Model.PromoteText %>"></i>
+            </a>
+            <a id="a-u-<%= attributedEncodedStoryId%>" href="javascript:void(0)" class="<%= unkiggClass %>"
+               onclick="javascript:Story.demote('<%= attributedEncodedStoryId %>');">
+                <i class="fas fa-arrow-down" title="<%= ViewData.Model.DemoteText %>"></i>
+            </a>
+        <% } %>
+        <div class="commentbg bg-light text-dark" id="s-c-<%= attributedEncodedStoryId %>">
+            <%= story.VoteCount %>
+            <div class="mark bg-light"></div>
+        </div>
+    </div>
+    <div class="views row justify-content-center align-items-center">
+        <i class="fa fa-eye mr-1"></i> <%=story.ViewCount%>
+    </div>
+    <div class="time row justify-content-center align-items-center">
+        <i class="fas fa-user-clock mr-1"></i>
+        <% if (story.IsPublished()) %>
+        <% {
+               bool wasStoryPublishedInSummerTime = story.PublishedAt.Value.IsSummerTime();
+               string storyPublishedTimeLocalName = story.PublishedAt.Value.GetLocalTimeName(wasStoryPublishedInSummerTime);
+               int hoursToAddToUtcTime = story.PublishedAt.Value.GetHoursDifferenceForLocalTime(wasStoryPublishedInSummerTime);
+        %>
+            <span class="time" title="<%= story.PublishedAt.Value.AddHours(hoursToAddToUtcTime).ToString(LongDateFormat) %>
+                <%= storyPublishedTimeLocalName %>"><%= story.PublishedAt.Value.ToShortRelative()%></span>
+        <% }
+           else
+           {%>           
+            <span class="time" title="<%= story.CreatedAt.ToString(hDateFormat) %>"><%= story.CreatedAt.ToString(LongDateFormat) %> GMT</span>
+        <%
+           }%>
+    </div>
+    
     <div class="action <%= actionClass %>">
-        <% if (story.IsPostedBy(user)) %>
+        <%-- if (story.IsPostedBy(user)) %>
         <% { %>
         <span title="Ty wysłałeś/-aś ten artykuł">mój</span>
         <% } %>
@@ -154,7 +189,7 @@
                     href="javascript:void(0)" onclick="javascript:Story.demote('<%= attributedEncodedStoryId %>')"
                     class="<%= unkiggClass %>">
                     <%= ViewData.Model.DemoteText %></a>
-        <% } %>
+        <% } --%>
         <span id="s-p-<%= attributedEncodedStoryId%>"></span>
     </div>
 </div>
@@ -168,13 +203,56 @@
        onClick = @"onclick=""javascript:Story.click('" + attributedEncodedStoryId + @"')""";
        rel += " external";
    } %>
-<div itemscope itemtype="http://schema.org/Article" class="article">
-    <div class="title">
+<div itemscope itemtype="http://schema.org/Article" class="col-10">
+    <div class="p-3 row mh-130">
         <h2>
-            <a class="entry-title taggedlink" rel="<%= rel %>" href="<%= Html.AttributeEncode(detailUrl) %>"
-                <%= onClick %> >
-                <span itemprop="name"><%= Html.Encode(story.Title)%></span></a></h2>
+            <a rel="<%= rel %>" href="<%= Html.AttributeEncode(detailUrl) %>" <%= onClick %> >
+            <%= Html.Encode(story.Title)%></a>
+        </h2>
+        <p>
+            <%= detailsMode? story.TextDescription: story.StrippedDescription(290) %>
+        </p>
     </div>
+    <div class="row justify-content-center align-items-center">
+        <% if ((user != null) && (detailsMode) && (user.CanModerate() || user.HasRightsToEditStory(story))) %>
+        <% { %>
+            <a class="badge badge-light mr-3" href="javascript:void(0)" 
+                    onclick="Membership.editStory('<%= attributedEncodedStoryId %>')">
+                edycja
+            </a>
+        <% } %>
+        <% if ((user != null) && user.CanModerate()) %>
+        <% { %>
+            <a class="badge badge-light mr-3" href="javascript:void(0)" 
+                    onclick="Moderation.deleteStory('<%= attributedEncodedStoryId %>')">
+                usuń
+            </a>
+            <a class="badge badge-light mr-3" href="javascript:void(0)" 
+                    onclick="Moderation.confirmSpamStory('<%= attributedEncodedStoryId %>')">
+                spam
+            </a>
+            <a class="badge badge-light mr-3" href="javascript:void(0)" 
+                    onclick="Moderation.generateMiniatureStory('<%= attributedEncodedStoryId %>')">
+                miniaturka
+            </a>
+        <% } %>
+        <% else if (story.IsPublished() == false)
+           {%>
+            <a class="badge badge-light mr-3" href="javascript:void(0)" 
+                    onclick="Story.markAsSpam('<%=attributedEncodedStoryId%>')">
+                spam?
+            </a>
+        <%
+           }%>
+        <% if (!story.IsApproved() && user.CanModerate()) %>
+        <% { %>
+            <a class="badge badge-light mr-3" href="javascript:void(0)"
+                    onclick="Moderation.approveStory('<%= attributedEncodedStoryId %>')">
+                zaakceptuj
+            </a>
+        <% } %>
+    </div>
+    <!--
     <div class="entry-content description" <%= detailsMode ? "style='height: auto'" : "" %>>        
         <p itemprop="description"><span itemprop="articleBody">
         <% if (detailsMode) %>
@@ -195,7 +273,7 @@
                 <% } %>
             </div>
             <div class="more-row">
-                Źródło: <a href="http://<%= Html.AttributeEncode(story.Host()) %>" target="_blank" rel="noopener">
+                Źródło: <a href="http://<%= Html.AttributeEncode(story.Host()) %>" target="_blank">
                     <%= story.Host()%></a>
             </div>
             <div class="more-row nobg">
@@ -203,7 +281,7 @@
             </div>
         </div>
         <div class="entry-thumb">
-            <a href="<%= Html.AttributeEncode(detailUrl) %>" target="_blank" rel="external noopener" <%= onClick %>>
+            <a href="<%= Html.AttributeEncode(detailUrl) %>" target="_blank" rel="external" <%= onClick %>>
                 <% if (detailsMode) %>
                 <% { %>
                     <img id="thumb_img_id" itemprop="image" alt="<%= Html.AttributeEncode(story.Title) %>" src="<%= Html.AttributeEncode(story.GetSmallThumbnailPath()) %>"
@@ -217,8 +295,10 @@
             </a>
         </div>
     </div>
+    -->
 </div>
-<div class="summary">
+<!--
+<div class="summary col-3">
     <p>
         <span class="system">
             <%= Html.ActionLink(story.BelongsTo.Name, "Category", "Story", new { name = story.BelongsTo.UniqueName }, new { rel = "tag directory" })%></span>
@@ -275,3 +355,4 @@
         <% }%>
     </p>
 </div>
+-->
