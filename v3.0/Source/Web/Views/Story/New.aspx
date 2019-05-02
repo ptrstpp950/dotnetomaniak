@@ -33,45 +33,48 @@
     }
 
 </script>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server" />
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
-    <%= Html.PageHeader("Dodaj nowy artykuł")%>
-            <span class="pageMessage">Wypełnij formularz, aby dodać artykuł</span>
+    <div>
+        <%= Html.PageHeader("Dodaj nowy artykuł")%>
+        <p>Wypełnij formularz, aby dodać artykuł</p>
+    </div>
     <form id="frmStorySubmit" action="<%= Url.Action("Submit", "Story") %>" method="post">
-    <fieldset>
-        <div class="add-article-row">
-            <label for="txtStoryUrl" class="label">
-                Url:</label>
-            <input id="txtStoryUrl" name="url" type="text" class="largeTextBox" value="<%= Model.Url %>" />
-            <span id="errorStoryUrl" class="error"></span>
+        <div class="form-group row">
+            <label for="txtStoryUrl" class="form-control-label col-sm-2 col-form-label">Url:</label>
+            <div class="col-sm-10">
+                <input id="txtStoryUrl" name="url" type="text" class="form-control" value="<%= Model.Url %>" />
+                <span id="errorStoryUrl" class="error form-control-feedback"></span>
+            </div>
         </div>
-        <div class="add-article-row">
-            <label for="txtStoryTitle" class="label">
-                Tytuł:</label>
-            <input id="txtStoryTitle" name="title" type="text" class="largeTextBox" value="<%= Model.Title %>" />
-            <span class="error"></span>
+        <div class="form-group row">
+            <label for="txtStoryTitle" class="form-control-label col-sm-2 col-form-label">Tytuł:</label>
+            <div class="col-sm-10">
+                <input id="txtStoryTitle" name="title" type="text" class="form-control" value="<%= Model.Title %>" />
+                <span class="error form-control-feedback"></span>
+            </div>
         </div>
-        <div class="add-article-row">
-            <label for="txtStoryDescription" class="label">
-                Opis:</label>
-            <input type="hidden" id="hidDescription" name="description" />
-            <textarea id="txtStoryDescription" name="storyDescription" cols="52" rows="4"><%= Model.Description %></textarea>
-            <span class="error"></span>
-        </div>
-        <div>
-            <div class="wysiwyg-code">
-                <div id="storyPreview" class="livePreview wysiwyg-code2">
+        <div class="form-group row">
+            <label for="txtStoryDescription" class="form-control-label col-sm-2 col-form-label">Opis:</label>
+            <div class="col-sm-10">
+                <input type="hidden" id="hidDescription" name="description" />
+                <textarea id="txtStoryDescription" name="storyDescription" class="form-control" cols="52" rows="4"><%= Model.Description %></textarea>
+                <span class="error form-control-feedback"></span>
+                <div>
+                    <a id="lnkStoryPreview" class="btn btn-sm btn-info" href="javascript:void(0)">ukryj podgląd</a>
+                </div>
+                <div class="wysiwyg-code col-sm-12">
+                    <div id="storyPreview" class="livePreview wysiwyg-code2">
+                    </div>
                 </div>
             </div>
-            <a id="lnkStoryPreview" class="actionLink hide-sample" href="javascript:void(0)">ukryj
-                podgląd</a>
         </div>
-        <div class="add-article-row">
-            <label for="txtStoryTags" class="label">
-                Tagi:</label>
-            <input id="txtStoryTags" name="tags" type="text" class="largeTextBox" />
-            <span class="info">(oddziel przecinkiem wiele tagów)</span>
-            <span class="error"></span>
+        <div class="form-group">
+            <label for="txtStoryTags" class="form-control-label col-sm-2 col-form-label">Tagi:</label>
+            <input id="txtStoryTags" name="tags" type="text" class="form-control" />
+            <span class="form-text">(oddziel przecinkiem wiele tagów)</span>
+            <span class="error form-control-feedback"></span>
         </div>
         <div class="add-article-row radios-wrapper">
             <label class="label">
@@ -95,6 +98,5 @@
         <div class="add-article-row">
             <input id="btnStorySubmit" type="submit" class="largeButton" value="Dodaj" />
         </div>
-    </fieldset>
     </form>
 </asp:Content>

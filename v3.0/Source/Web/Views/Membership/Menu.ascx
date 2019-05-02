@@ -8,7 +8,7 @@
     <%{%>
         <% string userName = user.UserName; %>
         <img class="smoothImage" onload="javascript:SmoothImage.show(this)" alt="<%= Html.AttributeEncode(userName) %>" src="<%= Html.AttributeEncode(user.GravatarUrl(24)) %>"/>
-        <%= Html.RouteLink(userName, "User", new { name = user.Id.Shrink(), tab = UserDetailTab.Promoted, page = 1 })%>
+        <%= Html.RouteLink(userName, "User", new { name = user.Id.Shrink(), tab = UserDetailTab.Promoted, page = 1}, new { @class="text-light" })%>
     <%} %>
     <%else%>
     <%{%>
@@ -19,9 +19,9 @@
     <%{%>
         <%if (!user.IsOpenIDAccount()) %>
         <%{ %>
-                <a id="lnkChangePassword" href="javascript:void(0)">Zmień hasło</a><span>lub</span>
+                <a id="lnkChangePassword" href="javascript:void(0)" class="text-light">Zmień hasło</a> <span>lub</span>
         <%} %>
-        <a id="lnkLogout" href="javascript:void(0)">Wyloguj</a>
+        <a id="lnkLogout" href="javascript:void(0)" class="text-light">Wyloguj</a>
     <%}%>
     <%else%>
     <%{%>

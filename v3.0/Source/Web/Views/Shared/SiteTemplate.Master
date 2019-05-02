@@ -181,11 +181,13 @@
     <!--link href="<%= Url.Asset("css").Replace("&", "&amp;") %>" rel="stylesheet" type="text/css" /-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" 
           integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+   <link rel="stylesheet" href="">
     <style type="text/css">
         .mh-130 {
             min-height: 130px;
         }
     </style>
+    <link href="/Assets/StyleSheets/marItUp.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://forum.azyrusthemes.com/css/custom.css"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" 
           integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous"/>
@@ -386,12 +388,13 @@
             <%--<% Html.RenderPartial("FbLog", ViewData.Model); %>--%>
             <%--<% Html.RenderPartial("SearchBox", ViewData.Model); %>--%>
         </div-->
-        <div id="content" class="row">
+        <div class="container-fluid">
+        <div class="row flex-xl-nowrap">
             <% Html.RenderAction("Banner", "Recommendation"); %>
-            <div id="main" class="row">
+            <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5" role="main">
                 <asp:ContentPlaceHolder ID="MainContentPlaceHolder" runat="server">
                 </asp:ContentPlaceHolder>          
-                </div> 
+             </main> 
             <div id="sub">
                 <%--
                     if (Model.CanCurrentUserModerate)
@@ -426,9 +429,13 @@
                 <% Html.RenderAction("TopTabs","Membership"); %>
                 <% Html.RenderAction("Tabs","Tag"); %>
                 <% Html.RenderPartial("GooglePlusBox"); --%>	  
-                </div>	 
-            <script src="//connect.facebook.net/pl_PL/all.js#xfbml=1" type="text/javascript"></script><fb:like-box href="http://www.facebook.com/dotnetomaniakpl" width="919" show_faces="true" stream="false" header="true"></fb:like-box>
-        </div> 
+                </div>
+            </div>
+            <div class="row">
+                <script src="//connect.facebook.net/pl_PL/all.js#xfbml=1" type="text/javascript"></script><fb:like-box href="http://www.facebook.com/dotnetomaniakpl" width="919" show_faces="true" stream="false" header="true"></fb:like-box>
+            </div>
+        </div>
+        </div>
         <div id="footer">
             <p>
                 <strong>&copy; <%= ViewData.Model.SiteTitle %>.</strong>
@@ -456,6 +463,19 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip();
         })
+        jQuery.validator.setDefaults({
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.after(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
     </script>
 </body>
 </html>
