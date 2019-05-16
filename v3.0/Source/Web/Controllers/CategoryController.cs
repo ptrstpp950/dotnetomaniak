@@ -1,6 +1,7 @@
 namespace Kigg.Web
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Web.Mvc;
 
     using DomainObjects;
@@ -31,6 +32,12 @@ namespace Kigg.Web
 
         [ChildActionOnly]
         public ActionResult RadioButtonList()
+        {
+            return View(Categories);
+        }
+
+        [ChildActionOnly]
+        public ActionResult Select()
         {
             return View(Categories);
         }

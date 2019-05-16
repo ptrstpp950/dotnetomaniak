@@ -52,7 +52,7 @@ namespace Kigg.DomainObjects
         [DebuggerStepThrough]
         public static bool ShouldHideCaptcha(this IUser user)
         {
-            return (user != null) && (!IsPublicUser(user) || (user.CurrentScore > IoC.Resolve<IConfigurationSettings>().MaximumUserScoreToShowCaptcha));
+            return (user != null) && (!IsPublicUser(user) || (user.CurrentScore >= IoC.Resolve<IConfigurationSettings>().MaximumUserScoreToShowCaptcha));
         }
 
         [DebuggerStepThrough]

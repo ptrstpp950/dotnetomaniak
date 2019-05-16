@@ -100,6 +100,7 @@
     private void GenerateScript(jQueryScriptManager scriptManager)
     {
         scriptManager.RegisterSource(Url.Asset("js2"));
+        scriptManager.RegisterSource("/Assets/JavaScripts/Story.js");
 
         scriptManager.RegisterOnReady("Membership.set_isLoggedIn({0});".FormatWith(Model.IsCurrentUserAuthenticated.ToString().ToLowerInvariant()));
         scriptManager.RegisterOnReady("Membership.set_logOutUrl('{0}');".FormatWith(Url.RouteUrl("Logout")));
@@ -179,12 +180,40 @@
     <meta name="Rating" content="General" />
     <meta name="robots" content="index, follow" />  
     <!--link href="<%= Url.Asset("css").Replace("&", "&amp;") %>" rel="stylesheet" type="text/css" /-->
+    <link href="/Assets/StyleSheets/autocomplete.css" rel="stylesheet" />
+    <link href="/Assets/StyleSheets/ui.jquery.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" 
           integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
    <link rel="stylesheet" href="">
     <style type="text/css">
         .mh-130 {
             min-height: 130px;
+        }
+        .algolia-autocomplete {
+          width: 100%;
+        }
+        .algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+          width: 100%;
+        }
+        .algolia-autocomplete .aa-hint {
+          color: #999;
+        }
+        .algolia-autocomplete .aa-dropdown-menu {
+          width: 100%;
+          background-color: #fff;
+          border: 1px solid #999;
+          border-top: none;
+        }
+        .algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+          cursor: pointer;
+          padding: 5px 4px;
+        }
+        .algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+          background-color: #B2D7FF;
+        }
+        .algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+          font-weight: bold;
+          font-style: normal;
         }
     </style>
     <link href="/Assets/StyleSheets/marItUp.css" rel="stylesheet" />
@@ -456,6 +485,7 @@
         crossorigin="anonymous"></script>
     <kigg:jQueryScriptManager ID="scripts" runat="server">
     </kigg:jQueryScriptManager>
+    <script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
     <script src="/Assets/JavaScripts/Membership.js?d=<%=DateTime.Now.ToString("yyyyMMddHHmmss")%>"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

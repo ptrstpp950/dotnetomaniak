@@ -70,25 +70,26 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group row">
             <label for="txtStoryTags" class="form-control-label col-sm-2 col-form-label">Tagi:</label>
-            <input id="txtStoryTags" name="tags" type="text" class="form-control" />
+            <div class="col-sm-10">
+                <input id="txtStoryTags" name="tags" type="text" class="form-control" />
+            </div>
             <span class="form-text">(oddziel przecinkiem wiele tagów)</span>
             <span class="error form-control-feedback"></span>
         </div>
-        <div class="add-article-row radios-wrapper">
-            <label class="label">
-                Kategoria:</label>
-            <% Html.RenderAction("RadioButtonList", "Category"); %>   
-            <div class="clearfix"></div>
-            <span class="error"></span>
+        <div class="form-group row">
+            <label class="form-control-label col-sm-2 col-form-label">Kategoria:</label>
+            <div class="col-sm-10">
+                <% Html.RenderAction("Select", "Category"); %>   
+            </div>
         </div>
         <%if (Model.CaptchaEnabled)%>
         <%{%>
-        <div class="add-article-row">
-            <label>Captcha:</label>
-            <div style="float: left;">
-            <%= ReCaptcha.GetCaptcha() %>
+        <div class="form-group row">
+            <label class="form-control-label col-sm-2 col-form-label">Captcha:</label>
+            <div class="col-sm-10">
+                <%= ReCaptcha.GetCaptcha() %>
             </div>
         </div>
         <%}%>
@@ -96,7 +97,7 @@
         <div class="articleHeader">
         </div>
         <div class="add-article-row">
-            <input id="btnStorySubmit" type="submit" class="largeButton" value="Dodaj" />
+            <input id="btnStorySubmit" type="submit" class="btn btn-primary" value="Dodaj" />
         </div>
     </form>
 </asp:Content>

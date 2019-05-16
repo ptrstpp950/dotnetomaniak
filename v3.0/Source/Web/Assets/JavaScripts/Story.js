@@ -126,7 +126,7 @@
                         }
                     };
 
-                    $(form).ajaxSubmit(options);
+                    //$(form).ajaxSubmit(options);
                     return false;
                 }
             }
@@ -169,39 +169,38 @@
         );
 
         Story._lastRetrievedUrl = txtStoryUrl.val();
-        Array.prototype.last = function () { return this[this.length - 1]; }
-        $('#txtStoryTags').autocomplete(
+        Array.prototype.last = function () { return this[this.length - 1]; };
+        $('#txtStoryTags').autocomplete({ hint: false }, [
             {
-                source: function (request, response) {
+                debounce: 500,
+                source: function (query, callback) {
                     jQuery.ajax({
                         url: Story._suggestTagsUrl,
                         data: {
-                            q: request.term.split(',').last(),
+                            q: query.split(',').last(),
                             limit: 10
                         },
                         success: function (data) {
-                            response($.map(
-                                eval(data), function (row) {
-                                    return {
-                                        label: row,
-                                        value: row + ', ',
-                                        result: row
-                                    }
-                                }
-                            ));
+                            callback(data);
                         }
                     });
                 },
-                select: function (event, ui) {
-                    event.preventDefault();
-                    var value = $('#txtStoryTags').val();
-                    var lastItem = value.split(',').last();
-                    value = value.replace(lastItem.trim(), ui.item.value);
-                    $('#txtStoryTags').val(value);
-                },
-                minLength: 2,
+                displayKey: 'my_attribute',
+                templates: {
+                    suggestion: function (suggestion) {
+                        return suggestion;
+                    }
+                }
             }
-        );
+        ]).on('autocomplete:selected', function (event, suggestion, dataset, context) {
+            var value = $('#txtStoryTags').val();
+            var all = value.split(',').map(function (item) {
+                return item.trim();
+            });
+            all[all.length - 1] = suggestion;
+            value = all.join(', ');
+            $('#txtStoryTags').val(value);
+        });
 
         if (!Membership.get_isLoggedIn()) {
             Membership.showLogin(true);
